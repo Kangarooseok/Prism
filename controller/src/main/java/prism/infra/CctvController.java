@@ -1,83 +1,68 @@
 package prism.infra;
 
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import prism.domain.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import prism.domain.*;
-
-//<<< Clean Arch / Inbound Adaptor
+import java.util.List;
+import java.util.Optional;
 
 @RestController
-// @RequestMapping(value="/cctvs")
 @Transactional
+@RequestMapping("/cctvs")
 public class CctvController {
 
     @Autowired
     CctvRepository cctvRepository;
 
-    @RequestMapping(
-            value = "/cctvs/registercctv",
-            method = RequestMethod.POST,
-            produces = "application/json;charset=UTF-8"
-    )
+    // 1. 등록
+    @PostMapping("/register")
     public Cctv registerCctv(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestBody RegisterCctvCommand registerCctvCommand
+            @RequestBody RegisterCctvCommand command
     ) throws Exception {
-        System.out.println("##### /cctv/registerCctv  called #####");
         Cctv cctv = new Cctv();
-        cctv.registerCctv(registerCctvCommand);
-        cctvRepository.save(cctv);
-        return cctv;
+        cctv.registerCctv(command);
+        return cctvRepository.save(cctv);
     }
 
-    @RequestMapping(
-            value = "/cctvs/{id}/modifycctv",
-            method = RequestMethod.PUT,
-            produces = "application/json;charset=UTF-8"
-    )
+    // 2. 수정
+    @PutMapping("/{id}/modify")
     public Cctv modifyCctv(
-            @PathVariable(value = "id") Long id,
-            @RequestBody ModifyCctvCommand modifyCctvCommand,
-            HttpServletRequest request,
-            HttpServletResponse response
+            @PathVariable Long id,
+            @RequestBody ModifyCctvCommand command
     ) throws Exception {
-        System.out.println("##### /cctv/modifyCctv  called #####");
         Optional<Cctv> optionalCctv = cctvRepository.findById(id);
-
         optionalCctv.orElseThrow(() -> new Exception("No Entity Found"));
         Cctv cctv = optionalCctv.get();
-        cctv.modifyCctv(modifyCctvCommand);
-
-        cctvRepository.save(cctv);
-        return cctv;
+        cctv.modifyCctv(command);
+        return cctvRepository.save(cctv);
     }
 
-    @RequestMapping(
-            value = "/cctvs/{id}/deletecctv",
-            method = RequestMethod.DELETE,
-            produces = "application/json;charset=UTF-8"
-    )
-    public Cctv deleteCctv(
-            @PathVariable(value = "id") Long id,
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws Exception {
-        System.out.println("##### /cctv/deleteCctv  called #####");
+    // 3. 삭제
+    @DeleteMapping("/{id}")
+    public String deleteCctv(@PathVariable Long id) throws Exception {
         Optional<Cctv> optionalCctv = cctvRepository.findById(id);
-
         optionalCctv.orElseThrow(() -> new Exception("No Entity Found"));
         Cctv cctv = optionalCctv.get();
         cctv.deleteCctv();
-
         cctvRepository.delete(cctv);
-        return cctv;
+        return "Deleted CCTV with ID: " + id;
+    }
+
+    // 4. 단건 조회
+    @GetMapping("/{id}")
+    public Cctv getCctv(@PathVariable Long id) throws Exception {
+        return cctvRepository.findById(id).orElseThrow(() -> new Exception("No Entity Found"));
+    }
+
+    // 5. 전체 조회
+    @GetMapping
+    public List<Cctv> getAllCctvs() {
+        return (List<Cctv>) cctvRepository.findAll();
     }
 }
-//>>> Clean Arch / Inbound Adaptor
