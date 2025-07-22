@@ -21,14 +21,14 @@ public class CctvController {
     CctvRepository cctvRepository;
 
     @RequestMapping(
-        value = "/cctvs/registercctv",
-        method = RequestMethod.POST,
-        produces = "application/json;charset=UTF-8"
+            value = "/cctvs/registercctv",
+            method = RequestMethod.POST,
+            produces = "application/json;charset=UTF-8"
     )
     public Cctv registerCctv(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        @RequestBody RegisterCctvCommand registerCctvCommand
+            HttpServletRequest request,
+            HttpServletResponse response,
+            @RequestBody RegisterCctvCommand registerCctvCommand
     ) throws Exception {
         System.out.println("##### /cctv/registerCctv  called #####");
         Cctv cctv = new Cctv();
@@ -38,15 +38,15 @@ public class CctvController {
     }
 
     @RequestMapping(
-        value = "/cctvs/{id}/modifycctv",
-        method = RequestMethod.PUT,
-        produces = "application/json;charset=UTF-8"
+            value = "/cctvs/{id}/modifycctv",
+            method = RequestMethod.PUT,
+            produces = "application/json;charset=UTF-8"
     )
     public Cctv modifyCctv(
-        @PathVariable(value = "id") Long id,
-        @RequestBody ModifyCctvCommand modifyCctvCommand,
-        HttpServletRequest request,
-        HttpServletResponse response
+            @PathVariable(value = "id") Long id,
+            @RequestBody ModifyCctvCommand modifyCctvCommand,
+            HttpServletRequest request,
+            HttpServletResponse response
     ) throws Exception {
         System.out.println("##### /cctv/modifyCctv  called #####");
         Optional<Cctv> optionalCctv = cctvRepository.findById(id);
@@ -60,14 +60,14 @@ public class CctvController {
     }
 
     @RequestMapping(
-        value = "/cctvs/{id}/deletecctv",
-        method = RequestMethod.PUT,
-        produces = "application/json;charset=UTF-8"
+            value = "/cctvs/{id}/deletecctv",
+            method = RequestMethod.DELETE,
+            produces = "application/json;charset=UTF-8"
     )
     public Cctv deleteCctv(
-        @PathVariable(value = "id") Long id,
-        HttpServletRequest request,
-        HttpServletResponse response
+            @PathVariable(value = "id") Long id,
+            HttpServletRequest request,
+            HttpServletResponse response
     ) throws Exception {
         System.out.println("##### /cctv/deleteCctv  called #####");
         Optional<Cctv> optionalCctv = cctvRepository.findById(id);
@@ -76,7 +76,7 @@ public class CctvController {
         Cctv cctv = optionalCctv.get();
         cctv.deleteCctv();
 
-        cctvRepository.save(cctv);
+        cctvRepository.delete(cctv);
         return cctv;
     }
 }
