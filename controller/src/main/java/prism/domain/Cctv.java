@@ -13,6 +13,7 @@ import prism.domain.CctvDeleted;
 import prism.domain.CctvModified;
 import prism.domain.CctvRegistered;
 
+//test
 @Entity
 @Table(name = "Cctv_table")
 @Data
