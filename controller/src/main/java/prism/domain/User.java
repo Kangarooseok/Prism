@@ -1,0 +1,92 @@
+package prism.domain;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.*;
+import lombok.Data;
+import prism.ControllerApplication;
+import prism.domain.UserAssignedToTeam;
+import prism.domain.UserDeleted;
+import prism.domain.UserRegistered;
+import prism.domain.UserUpdated;
+
+@Entity
+@Table(name = "User_table")
+@Data
+//<<< DDD / Aggregate Root
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    private String name;
+
+    private String email;
+
+    private String role;
+
+    private String assignedTeam;
+
+    private Date createdAt;
+
+    private Date updatedAt;
+
+    @PostPersist
+    public void onPostPersist() {
+        UserDeleted userDeleted = new UserDeleted(this);
+        userDeleted.publishAfterCommit();
+
+        UserRegistered userRegistered = new UserRegistered(this);
+        userRegistered.publishAfterCommit();
+
+        UserUpdated userUpdated = new UserUpdated(this);
+        userUpdated.publishAfterCommit();
+
+        UserAssignedToTeam userAssignedToTeam = new UserAssignedToTeam(this);
+        userAssignedToTeam.publishAfterCommit();
+    }
+
+    public static UserRepository repository() {
+        UserRepository userRepository = ControllerApplication.applicationContext.getBean(
+            UserRepository.class
+        );
+        return userRepository;
+    }
+
+    //<<< Clean Arch / Port Method
+    public void userRegister(UserRegisterCommand userRegisterCommand) {
+        //implement business logic here:
+
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public void userUpdate(UserUpdateCommand userUpdateCommand) {
+        //implement business logic here:
+
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public void userDelete() {
+        //implement business logic here:
+
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public void assignUserToTeam(
+        AssignUserToTeamCommand assignUserToTeamCommand
+    ) {
+        //implement business logic here:
+
+    }
+    //>>> Clean Arch / Port Method
+
+}
+//>>> DDD / Aggregate Root

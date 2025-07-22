@@ -1,0 +1,399 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller
+  labels:
+    app: controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: controller
+  template:
+    metadata:
+      labels:
+        app: controller
+    spec:
+      containers:
+        - name: controller
+          image: username/controller:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification
+  labels:
+    app: notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+        - name: notification
+          image: username/notification:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertsubscription
+  labels:
+    app: alertsubscription
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertsubscription
+  template:
+    metadata:
+      labels:
+        app: alertsubscription
+    spec:
+      containers:
+        - name: alertsubscription
+          image: username/alertsubscription:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthchecklog
+  labels:
+    app: healthchecklog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: healthchecklog
+  template:
+    metadata:
+      labels:
+        app: healthchecklog
+    spec:
+      containers:
+        - name: healthchecklog
+          image: username/healthchecklog:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: issue
+  labels:
+    app: issue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: issue
+  template:
+    metadata:
+      labels:
+        app: issue
+    spec:
+      containers:
+        - name: issue
+          image: username/issue:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cctv
+  labels:
+    app: cctv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cctv
+  template:
+    metadata:
+      labels:
+        app: cctv
+    spec:
+      containers:
+        - name: cctv
+          image: username/cctv:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: network
+  labels:
+    app: network
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: network
+  template:
+    metadata:
+      labels:
+        app: network
+    spec:
+      containers:
+        - name: network
+          image: username/network:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: controller
+  labels:
+    app: controller
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: controller
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification
+  labels:
+    app: notification
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: notification
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertsubscription
+  labels:
+    app: alertsubscription
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: alertsubscription
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: healthchecklog
+  labels:
+    app: healthchecklog
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: healthchecklog
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: issue
+  labels:
+    app: issue
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: issue
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cctv
+  labels:
+    app: cctv
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: cctv
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: network
+  labels:
+    app: network
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: network
+
