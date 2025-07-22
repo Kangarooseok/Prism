@@ -1,4 +1,4 @@
-package prism.infra;
+package prism.infra.controller;
 
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
