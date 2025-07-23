@@ -1,4 +1,4 @@
-package prism.infra.controller;
+package prism.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class CctvController {
     @Autowired
     CctvRepository cctvRepository;
 
-    // 1. 등록
+    // 1. 등록.
     @PostMapping("/register")
     public Cctv registerCctv(
             HttpServletRequest request,
