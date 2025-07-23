@@ -2,24 +2,19 @@ package prism.infra.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import prism.domain.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-<<<<<<< HEAD
+
 import java.util.List;
 import java.util.Optional;
-=======
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import prism.domain.*;
+import prism.domain.CctvRepository;
+import prism.domain.ModifyCctvCommand;
+import prism.domain.RegisterCctvCommand;
 import prism.domain.cctv.model.Cctv;
-
-//<<< Clean Arch / Inbound Adaptor
->>>>>>> controller
 
 @RestController
 @Transactional
