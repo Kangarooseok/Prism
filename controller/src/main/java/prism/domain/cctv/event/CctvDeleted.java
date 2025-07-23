@@ -1,4 +1,4 @@
-package prism.domain;
+package prism.domain.cctv.event;
 
 import java.util.*;
 import lombok.*;
@@ -8,24 +8,22 @@ import prism.infra.AbstractEvent;
 //<<< DDD / Domain Event
 @Data
 @ToString
-public class CctvModified extends AbstractEvent {
+public class CctvDeleted extends AbstractEvent {
 
     private Long id;
     private String locationName;
     private String locationAddress;
     private String ipAddress;
     private String hlsAddress;
-    private Float longitude;
-    private Float latitude;
     private Date createdAt;
     private Date updatedAt;
     private String status;
 
-    public CctvModified(Cctv aggregate) {
+    public CctvDeleted(Cctv aggregate) {
         super(aggregate);
     }
 
-    public CctvModified() {
+    public CctvDeleted() {
         super();
     }
 }

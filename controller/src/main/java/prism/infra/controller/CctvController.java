@@ -1,8 +1,7 @@
-package prism.controller;
+package prism.infra.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import prism.domain.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +12,12 @@ import java.util.Optional;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import prism.domain.cctv.command.ModifyCctvCommand;
+import prism.domain.cctv.command.RegisterCctvCommand;
 import prism.domain.cctv.model.Cctv;
+import prism.domain.cctv.repository.CctvRepository;
 
 
-
-//test.........................
 @RestController
 @Transactional
 @RequestMapping("/cctvs")

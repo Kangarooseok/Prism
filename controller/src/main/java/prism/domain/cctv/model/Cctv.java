@@ -3,7 +3,13 @@ package prism.domain.cctv.model;
 import java.util.Date;
 import javax.persistence.*;
 import lombok.Data;
-import prism.domain.*;
+import prism.ControllerApplication;
+import prism.domain.cctv.command.ModifyCctvCommand;
+import prism.domain.cctv.command.RegisterCctvCommand;
+import prism.domain.cctv.event.CctvDeleted;
+import prism.domain.cctv.event.CctvModified;
+import prism.domain.cctv.event.CctvRegistered;
+import prism.domain.cctv.repository.CctvRepository;
 
 //test
 @Entity

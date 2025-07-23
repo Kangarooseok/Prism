@@ -3,15 +3,16 @@ package prism.infra;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.MimeTypeUtils;
+import prism.ControllerApplication; // ✅ 클래스 import
 import prism.config.kafka.KafkaProcessor;
 
-//<<< Clean Arch / Outbound Adaptor
 public class AbstractEvent {
 
     String eventType;
@@ -28,34 +29,26 @@ public class AbstractEvent {
     }
 
     public void publish() {
-        /**
-         * spring streams 방식
-         */
-        KafkaProcessor processor = ControllerApplication.applicationContext.getBean(
-            KafkaProcessor.class
-        );
+        KafkaProcessor processor = ControllerApplication.applicationContext.getBean(KafkaProcessor.class);
         MessageChannel outputChannel = processor.outboundTopic();
 
         outputChannel.send(
-            MessageBuilder
-                .withPayload(this)
-                .setHeader(
-                    MessageHeaders.CONTENT_TYPE,
-                    MimeTypeUtils.APPLICATION_JSON
-                )
-                .setHeader("type", getEventType())
-                .build()
+                MessageBuilder
+                        .withPayload(this)
+                        .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+                        .setHeader("type", getEventType())
+                        .build()
         );
     }
 
     public void publishAfterCommit() {
         TransactionSynchronizationManager.registerSynchronization(
-            new TransactionSynchronization() {
-                @Override
-                public void afterCommit() {
-                    AbstractEvent.this.publish();
+                new TransactionSynchronization() {
+                    @Override
+                    public void afterCommit() {
+                        AbstractEvent.this.publish();
+                    }
                 }
-            }
         );
     }
 
@@ -81,15 +74,10 @@ public class AbstractEvent {
 
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = null;
-
         try {
-            json = objectMapper.writeValueAsString(this);
+            return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("JSON format exception", e);
         }
-
-        return json;
     }
 }
-//>>> Clean Arch / Outbound Adaptor
