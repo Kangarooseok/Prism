@@ -1,11 +1,9 @@
-package prism.domain;
+package prism.domain.cctv.command;
 
-import java.time.LocalDate;
-import java.util.*;
 import lombok.Data;
 
 @Data
-public class ModifyCctvCommand {
+public class RegisterCctvCommand {
 
     private String locationName;
     private String locationAddress;

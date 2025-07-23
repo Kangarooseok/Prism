@@ -1,4 +1,4 @@
-package prism.dto;
+package prism.infra.dto;
 
 import lombok.Getter;
 import lombok.Setter;

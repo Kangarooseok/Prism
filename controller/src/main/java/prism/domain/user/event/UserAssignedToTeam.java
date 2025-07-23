@@ -1,9 +1,7 @@
-package prism.domain;
+package prism.domain.user.event;
 
-import java.time.LocalDate;
-import java.util.*;
 import lombok.*;
-import prism.domain.*;
+import prism.domain.user.model.User;
 import prism.infra.AbstractEvent;
 
 //<<< DDD / Domain Event

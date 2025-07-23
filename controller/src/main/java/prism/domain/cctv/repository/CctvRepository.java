@@ -1,4 +1,4 @@
-package prism.domain;
+package prism.domain.cctv.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

@@ -1,4 +1,4 @@
-package prism.infra;
+package prism.infra.controller;
 
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import prism.domain.*;
+import prism.domain.user.command.AssignUserToTeamCommand;
+import prism.domain.user.command.UserRegisterCommand;
+import prism.domain.user.command.UserUpdateCommand;
+import prism.domain.user.model.User;
+import prism.domain.user.repository.UserRepository;
 
 //<<< Clean Arch / Inbound Adaptor
 

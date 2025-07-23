@@ -1,16 +1,13 @@
 package prism.infra;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.naming.NameParser;
-import javax.naming.NameParser;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import prism.config.kafka.KafkaProcessor;
-import prism.domain.*;
+import prism.domain.cctv.repository.CctvRepository;
+import prism.domain.user.repository.UserRepository;
 
 //<<< Clean Arch / Inbound Adaptor
 @Service

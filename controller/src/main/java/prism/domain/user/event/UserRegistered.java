@@ -1,26 +1,25 @@
-package prism.domain;
+package prism.domain.user.event;
 
-import java.time.LocalDate;
 import java.util.*;
 import lombok.*;
-import prism.domain.*;
+import prism.domain.user.model.User;
 import prism.infra.AbstractEvent;
 
 //<<< DDD / Domain Event
 @Data
 @ToString
-public class UserUpdated extends AbstractEvent {
+public class UserRegistered extends AbstractEvent {
 
     private Long id;
     private String name;
     private String email;
-    private Date updatedAt;
+    private Date createdAt;
 
-    public UserUpdated(User aggregate) {
+    public UserRegistered(User aggregate) {
         super(aggregate);
     }
 
-    public UserUpdated() {
+    public UserRegistered() {
         super();
     }
 }

@@ -1,8 +1,17 @@
-package prism.domain;
+package prism.domain.user.model;
 
 import java.util.Date;
 import javax.persistence.*;
 import lombok.Data;
+import prism.ControllerApplication;
+import prism.domain.user.command.AssignUserToTeamCommand;
+import prism.domain.user.command.UserRegisterCommand;
+import prism.domain.user.command.UserUpdateCommand;
+import prism.domain.user.event.UserAssignedToTeam;
+import prism.domain.user.event.UserDeleted;
+import prism.domain.user.event.UserRegistered;
+import prism.domain.user.event.UserUpdated;
+import prism.domain.user.repository.UserRepository;
 
 @Entity
 @Table(name = "User_table")
