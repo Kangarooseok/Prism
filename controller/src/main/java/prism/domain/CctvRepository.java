@@ -2,7 +2,7 @@ package prism.domain;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import prism.domain.*;
+import prism.domain.cctv.model.Cctv;
 
 //<<< PoEAA / Repository
 @RepositoryRestResource(collectionResourceRel = "cctvs", path = "cctvs")

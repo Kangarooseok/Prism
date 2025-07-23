@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import prism.domain.*;
+import prism.domain.cctv.model.Cctv;
 
 //<<< Clean Arch / Inbound Adaptor
 
