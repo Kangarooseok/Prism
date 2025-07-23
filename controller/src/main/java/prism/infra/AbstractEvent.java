@@ -9,7 +9,6 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.MimeTypeUtils;
-import prism.ControllerApplication;
 import prism.config.kafka.KafkaProcessor;
 
 //<<< Clean Arch / Outbound Adaptor

@@ -3,7 +3,6 @@ package prism.domain.cctv.model;
 import java.util.Date;
 import javax.persistence.*;
 import lombok.Data;
-import prism.ControllerApplication;
 import prism.domain.*;
 
 //test
