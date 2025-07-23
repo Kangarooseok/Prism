@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import prism.domain.cctv.model.Cctv;
 
 
+
+//test.........................
 @RestController
 @Transactional
 @RequestMapping("/cctvs")
