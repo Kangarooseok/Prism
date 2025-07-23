@@ -1,17 +1,10 @@
-package prism.domain;
+package prism.domain.cctv.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import javax.persistence.*;
 import lombok.Data;
 import prism.ControllerApplication;
-import prism.domain.CctvDeleted;
-import prism.domain.CctvModified;
-import prism.domain.CctvRegistered;
+import prism.domain.*;
 
 //test
 @Entity

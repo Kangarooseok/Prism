@@ -1,9 +1,8 @@
 package prism.domain;
 
-import java.time.LocalDate;
 import java.util.*;
 import lombok.*;
-import prism.domain.*;
+import prism.domain.cctv.model.Cctv;
 import prism.infra.AbstractEvent;
 
 //<<< DDD / Domain Event
