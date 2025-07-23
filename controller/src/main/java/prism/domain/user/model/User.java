@@ -16,7 +16,7 @@ import prism.domain.user.repository.UserRepository;
 @Entity
 @Table(name = "User_table")
 @Data
-//<<< DDD / Aggregate Root
+//<<< DDD / Aggregate Root.
 public class User {
 
     @Id
