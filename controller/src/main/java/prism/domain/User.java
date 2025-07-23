@@ -1,18 +1,8 @@
 package prism.domain;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import javax.persistence.*;
 import lombok.Data;
-import prism.ControllerApplication;
-import prism.domain.UserAssignedToTeam;
-import prism.domain.UserDeleted;
-import prism.domain.UserRegistered;
-import prism.domain.UserUpdated;
 
 @Entity
 @Table(name = "User_table")

@@ -1,4 +1,4 @@
-package prism.service;
 
+package prism.service;
 public class CctvCommandService {
 }
