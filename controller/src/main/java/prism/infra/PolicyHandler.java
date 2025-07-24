@@ -1,26 +1,16 @@
 package prism.infra;
 
-import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.messaging.handler.annotation.Payload;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import prism.config.kafka.KafkaProcessor;
-import prism.domain.cctv.repository.CctvRepository;
-import prism.domain.user.repository.UserRepository;
 
-//<<< Clean Arch / Inbound Adaptor
 @Service
-@Transactional
+@Slf4j
 public class PolicyHandler {
 
-    @Autowired
-    CctvRepository cctvRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whatever(@Payload String eventString) {}
+    @KafkaListener(topics = "prism.cctv", groupId = "prism")
+    public void onMessage(String message) {
+        log.info("📥 Received Kafka message: {}", message);
+        // JSON 파싱 및 후처리 로직 가능
+    }
 }
-//>>> Clean Arch / Inbound Adaptor

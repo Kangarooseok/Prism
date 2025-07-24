@@ -1,10 +1,11 @@
 package prism.domain.cctv.command;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 public class RegisterCctvCommand {
-
     private String locationName;
     private String locationAddress;
     private String ipAddress;

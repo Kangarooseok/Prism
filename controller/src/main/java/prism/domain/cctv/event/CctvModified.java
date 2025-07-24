@@ -5,8 +5,9 @@ import lombok.*;
 import prism.domain.cctv.model.Cctv;
 import prism.infra.AbstractEvent;
 
-//<<< DDD / Domain Event
-@Data
+
+@Setter
+@Getter
 @ToString
 public class CctvModified extends AbstractEvent {
 
@@ -21,12 +22,8 @@ public class CctvModified extends AbstractEvent {
     private Date updatedAt;
     private String status;
 
-    public CctvModified(Cctv aggregate) {
-        super(aggregate);
-    }
-
-    public CctvModified() {
-        super();
+    public CctvModified(Cctv cctv) {
+        super(cctv, "prism.cctv"); // ✅ topic 설정
     }
 }
 //>>> DDD / Domain Event

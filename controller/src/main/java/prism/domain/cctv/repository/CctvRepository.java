@@ -1,10 +1,9 @@
 package prism.domain.cctv.repository;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import prism.domain.cctv.model.Cctv;
 
-//<<< PoEAA / Repository
-@RepositoryRestResource(collectionResourceRel = "cctvs", path = "cctvs")
-public interface CctvRepository
-    extends PagingAndSortingRepository<Cctv, Long> {}
+@Repository
+public interface CctvRepository extends CrudRepository<Cctv, Long> {
+}
