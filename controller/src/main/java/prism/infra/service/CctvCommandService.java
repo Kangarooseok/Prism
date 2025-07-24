@@ -83,9 +83,6 @@ public class CctvCommandService {
     /**
      * CCTV 전체 조회
      */
-    /**
-     * CCTV 전체 조회
-     */
     public List<Cctv> getAll() {
         Iterable<Cctv> iterable = cctvRepository.findAll();
         return StreamSupport.stream(iterable.spliterator(), false)
