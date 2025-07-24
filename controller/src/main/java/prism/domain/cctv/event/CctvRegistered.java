@@ -1,13 +1,12 @@
 package prism.domain.cctv.event;
 
-import java.util.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import prism.domain.cctv.model.Cctv;
 import prism.infra.AbstractEvent;
 
-//<<< DDD / Domain Event
-@Data
-@ToString
+@Getter
+@Setter
 public class CctvRegistered extends AbstractEvent {
 
     private Long id;
@@ -17,16 +16,17 @@ public class CctvRegistered extends AbstractEvent {
     private String hlsAddress;
     private Float longitude;
     private Float latitude;
-    private Date createdAt;
-    private Date updatedAt;
     private String status;
 
-    public CctvRegistered(Cctv aggregate) {
-        super(aggregate);
-    }
-
-    public CctvRegistered() {
-        super();
+    public CctvRegistered(Cctv cctv) {
+        super(cctv, "prism.cctv");
+        this.id = cctv.getId();
+        this.locationName = cctv.getLocationName();
+        this.locationAddress = cctv.getLocationAddress();
+        this.ipAddress = cctv.getIpAddress();
+        this.hlsAddress = cctv.getHlsAddress();
+        this.longitude = cctv.getLongitude();
+        this.latitude = cctv.getLatitude();
+        this.status = cctv.getStatus();
     }
 }
-//>>> DDD / Domain Event

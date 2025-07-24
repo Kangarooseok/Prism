@@ -1,6 +1,8 @@
 package prism.domain.cctv.command;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class DeleteCctvCommand {}

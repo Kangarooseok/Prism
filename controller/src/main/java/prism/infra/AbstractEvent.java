@@ -1,83 +1,20 @@
 package prism.infra;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.BeanUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
-import org.springframework.util.MimeTypeUtils;
-import prism.ControllerApplication; // ✅ 클래스 import
-import prism.config.kafka.KafkaProcessor;
+import lombok.Getter;
+import lombok.Setter;
+import prism.domain.cctv.model.Cctv;
 
-public class AbstractEvent {
+@Getter
+@Setter
+public abstract class AbstractEvent {
 
-    String eventType;
-    Long timestamp;
+    protected String topic;
+    protected String eventType;
+    protected long timestamp;
 
-    public AbstractEvent(Object aggregate) {
-        this();
-        BeanUtils.copyProperties(aggregate, this);
-    }
-
-    public AbstractEvent() {
-        this.setEventType(this.getClass().getSimpleName());
+    public AbstractEvent(Cctv cctv, String topic) {
+        this.topic = topic;
+        this.eventType = this.getClass().getSimpleName();
         this.timestamp = System.currentTimeMillis();
-    }
-
-    public void publish() {
-        KafkaProcessor processor = ControllerApplication.applicationContext.getBean(KafkaProcessor.class);
-        MessageChannel outputChannel = processor.outboundTopic();
-
-        outputChannel.send(
-                MessageBuilder
-                        .withPayload(this)
-                        .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-                        .setHeader("type", getEventType())
-                        .build()
-        );
-    }
-
-    public void publishAfterCommit() {
-        TransactionSynchronizationManager.registerSynchronization(
-                new TransactionSynchronization() {
-                    @Override
-                    public void afterCommit() {
-                        AbstractEvent.this.publish();
-                    }
-                }
-        );
-    }
-
-    public String getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public boolean validate() {
-        return getEventType().equals(getClass().getSimpleName());
-    }
-
-    public String toJson() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("JSON format exception", e);
-        }
     }
 }

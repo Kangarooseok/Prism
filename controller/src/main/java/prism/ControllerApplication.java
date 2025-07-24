@@ -1,21 +1,24 @@
 package prism;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.ApplicationContext;
-import prism.config.kafka.KafkaProcessor;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableBinding(KafkaProcessor.class)
 @EnableFeignClients
 public class ControllerApplication {
 
     public static ApplicationContext applicationContext;
 
     public static void main(String[] args) {
-        applicationContext =
-                SpringApplication.run(ControllerApplication.class, args);
+        applicationContext = SpringApplication.run(ControllerApplication.class, args);
     }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("✅ ControllerApplication 로딩됨");
+    }
+
 }
