@@ -26,4 +26,3 @@ public class CctvModified extends AbstractEvent {
         super(cctv, "prism.cctv"); // ✅ topic 설정
     }
 }
-//>>> DDD / Domain Event

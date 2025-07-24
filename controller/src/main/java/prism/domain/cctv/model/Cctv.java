@@ -24,11 +24,12 @@ public class Cctv {
     private String hlsAddress;
     private Float longitude;
     private Float latitude;
-    private String status;
+
+    private String status; // ✅ 여기에 status 필드 추가
+
     private Date createdAt;
     private Date updatedAt;
 
-    // 등록 처리 로직
     public void registerCctv(RegisterCctvCommand command) {
         this.locationName = command.getLocationName();
         this.locationAddress = command.getLocationAddress();
@@ -36,12 +37,11 @@ public class Cctv {
         this.hlsAddress = command.getHlsAddress();
         this.longitude = command.getLongitude();
         this.latitude = command.getLatitude();
-        this.status = command.getStatus();
+        this.status = "ACTIVE"; // ✅ 등록 시 status 기본값 설정
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }
 
-    // 수정 처리 로직
     public void modifyCctv(ModifyCctvCommand command) {
         this.locationName = command.getLocationName();
         this.locationAddress = command.getLocationAddress();
@@ -49,13 +49,6 @@ public class Cctv {
         this.hlsAddress = command.getHlsAddress();
         this.longitude = command.getLongitude();
         this.latitude = command.getLatitude();
-        this.status = command.getStatus();
-        this.updatedAt = new Date();
-    }
-
-    // 삭제 처리 로직 (필요에 따라 soft delete로 변경 가능)
-    public void deleteCctv() {
-        this.status = "DELETED"; // 또는 그냥 삭제 처리: 서비스/컨트롤러에서 repository.delete(this)
         this.updatedAt = new Date();
     }
 }
