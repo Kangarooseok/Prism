@@ -6,44 +6,97 @@ import org.springframework.web.bind.annotation.*;
 import prism.domain.cctv.command.ModifyCctvCommand;
 import prism.domain.cctv.command.RegisterCctvCommand;
 import prism.domain.cctv.model.Cctv;
+import prism.infra.dto.CctvRequest;
+import prism.infra.dto.CctvResponse;
 import prism.infra.service.CctvCommandService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/cctvs") // <-- 변경됨
+@RequestMapping("/cctvs")
 @RequiredArgsConstructor
 public class CctvController {
 
     private final CctvCommandService cctvCommandService;
 
+    // CCTV 등록
     @PostMapping
-    public Cctv register(@RequestBody RegisterCctvCommand command) {
+    public Cctv register(@RequestBody CctvRequest request) {
+        RegisterCctvCommand command = new RegisterCctvCommand();
+        command.setLocationName(request.getLocationName());
+        command.setLocationAddress(request.getLocationAddress());
+        command.setIpAddress(request.getIpAddress());
+        command.setHlsAddress(request.getHlsAddress());
+        command.setLongitude(request.getLongitude());
+        command.setLatitude(request.getLatitude());
+        command.setGroupId(request.getGroupId());
+
         return cctvCommandService.register(command);
     }
 
-    @PostConstruct
-    public void init() {
-        System.out.println("✅ CctvController 로딩됨");
-    }
-
+    // CCTV 수정
     @PutMapping("/{id}")
-    public Cctv modify(@PathVariable Long id, @RequestBody ModifyCctvCommand command) throws Exception {
-        return cctvCommandService.modify(id, command);
+    public CctvResponse modify(@PathVariable Long id, @RequestBody ModifyCctvCommand command) throws Exception {
+        Cctv cctv = cctvCommandService.modify(id, command);
+
+        CctvResponse response = new CctvResponse();
+        response.setId(cctv.getId());
+        response.setLocationName(cctv.getLocationName());
+        response.setLocationAddress(cctv.getLocationAddress());
+        response.setIpAddress(cctv.getIpAddress());
+        response.setHlsAddress(cctv.getHlsAddress());
+        response.setLongitude(cctv.getLongitude());
+        response.setLatitude(cctv.getLatitude());
+        response.setStatus(cctv.getStatus());
+
+        if (cctv.getGroup() != null) {
+            response.setGroupId(cctv.getGroup().getId());
+            response.setGroupName(cctv.getGroup().getName());
+        }
+
+        return response;
     }
 
+    // CCTV 삭제
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) throws Exception {
         cctvCommandService.delete(id);
     }
 
+    // CCTV 단건 조회
     @GetMapping("/{id}")
     public Cctv get(@PathVariable Long id) throws Exception {
         return cctvCommandService.get(id);
     }
 
+    // CCTV 전체 조회
     @GetMapping
-    public List<Cctv> getAll() {
-        return cctvCommandService.getAll();
+    public List<CctvResponse> getAll() {
+        List<Cctv> cctvs = cctvCommandService.getAll();
+
+        return cctvs.stream().map(cctv -> {
+            CctvResponse response = new CctvResponse();
+            response.setId(cctv.getId());
+            response.setLocationName(cctv.getLocationName());
+            response.setLocationAddress(cctv.getLocationAddress());
+            response.setIpAddress(cctv.getIpAddress());
+            response.setHlsAddress(cctv.getHlsAddress());
+            response.setLongitude(cctv.getLongitude());
+            response.setLatitude(cctv.getLatitude());
+            response.setStatus(cctv.getStatus());
+
+            if (cctv.getGroup() != null) {
+                response.setGroupId(cctv.getGroup().getId());
+                response.setGroupName(cctv.getGroup().getName());
+            }
+
+            return response;
+        }).toList();
+    }
+
+    // 컨트롤러 로딩 확인용 로그
+    @PostConstruct
+    public void init() {
+        System.out.println("CctvController 로딩됨");
     }
 }
