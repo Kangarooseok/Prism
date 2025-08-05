@@ -17,9 +17,9 @@ public class EventPublisher {
         try {
             String json = objectMapper.writeValueAsString(event);
             kafkaProducer.send(event.getTopic(), json);
-            log.info("✅ Event published to Kafka topic [{}]: {}", event.getTopic(), json);
+            log.info("Event published to Kafka topic [{}]: {}", event.getTopic(), json);
         } catch (Exception e) {
-            log.error("❌ Kafka 메시지 전송 실패: {}", e.getMessage(), e);
+            log.error("Kafka 메시지 전송 실패: {}", e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }

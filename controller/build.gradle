@@ -17,33 +17,21 @@ ext {
 }
 
 dependencies {
-    // Web, JPA, Validation
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-    // Kafka
     implementation 'org.springframework.kafka:spring-kafka'
-
-    // Feign Client
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-
-    // HATEOAS (optional)
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-
-    // Messaging (optional - remove if unused)
     implementation 'org.springframework:spring-messaging'
     implementation 'org.projectlombok:lombok'
 
-    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // Database
     runtimeOnly 'com.mysql:mysql-connector-j'
 
-    // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
@@ -55,4 +43,10 @@ dependencyManagement {
 
 test {
     useJUnitPlatform()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }

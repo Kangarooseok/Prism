@@ -6,6 +6,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    // CORS 설정을 위한 메서드 오버라이딩
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -13,4 +15,3 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("*");
     }
 }
-

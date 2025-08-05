@@ -18,7 +18,7 @@ public class ControllerApplication {
 
     @PostConstruct
     public void init() {
-        System.out.println("✅ ControllerApplication 로딩됨");
+        System.out.println("ControllerApplication 로딩됨");
     }
 
 }
