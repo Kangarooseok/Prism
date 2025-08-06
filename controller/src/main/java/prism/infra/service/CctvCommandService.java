@@ -13,6 +13,7 @@ import prism.domain.group.model.CctvGroup;
 import prism.domain.group.repository.CctvGroupRepository;
 import prism.infra.EventPublisher;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,6 +60,14 @@ public class CctvCommandService {
 
         Cctv cctv = optional.get();
         cctv.modifyCctv(command);
+
+        // ✅ 그룹 변경 요청이 있을 경우 JPA 관리 객체로 주입
+        if (command.getGroupId() != null) {
+            CctvGroup group = cctvGroupRepository.findById(command.getGroupId())
+                    .orElseThrow(() -> new RuntimeException("그룹이 존재하지 않습니다"));
+            cctv.setGroup(group);
+        }
+
         Cctv saved = cctvRepository.save(cctv);
 
         // 수정 이벤트 발행 (Kafka)
@@ -93,5 +102,9 @@ public class CctvCommandService {
         Iterable<Cctv> iterable = cctvRepository.findAll();
         return StreamSupport.stream(iterable.spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    public Long countCreatedBetween(Date start, Date end) {
+        return cctvRepository.countByCreatedAtBetween(start, end);
     }
 }

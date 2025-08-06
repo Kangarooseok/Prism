@@ -11,6 +11,11 @@ import prism.infra.dto.CctvResponse;
 import prism.infra.service.CctvCommandService;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cctvs")
@@ -98,5 +103,26 @@ public class CctvController {
     @PostConstruct
     public void init() {
         System.out.println("CctvController 로딩됨");
+    }
+
+    //
+    @GetMapping("/daily-count")
+    public Map<String, Long> getDailyCounts() {
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+
+        Date todayStart = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date todayEnd = Date.from(today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        Date yesterdayStart = Date.from(yesterday.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date yesterdayEnd = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        Long todayCount = cctvCommandService.countCreatedBetween(todayStart, todayEnd);
+        Long yesterdayCount = cctvCommandService.countCreatedBetween(yesterdayStart, yesterdayEnd);
+
+        Map<String, Long> result = new HashMap<>();
+        result.put("today", todayCount);
+        result.put("yesterday", yesterdayCount);
+        return result;
     }
 }
