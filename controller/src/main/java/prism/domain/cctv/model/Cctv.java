@@ -21,7 +21,6 @@ public class Cctv {
     private Long id;
 
     // CCTV가 속한 그룹 (지연 로딩, 순환 참조 방지)
-    // 트러블슈팅 작성 예정
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     @JsonBackReference
@@ -48,12 +47,7 @@ public class Cctv {
         this.status = "ACTIVE";
         this.createdAt = new Date();
         this.updatedAt = new Date();
-
-        if (command.getGroupId() != null) {
-            CctvGroup group = new CctvGroup();
-            group.setId(command.getGroupId());
-            this.group = group;
-        }
+        // ⚠️ 그룹 설정은 외부에서 setGroup() 호출로 처리
     }
 
     // 수정 커맨드를 기반으로 CCTV 정보 업데이트
@@ -65,11 +59,6 @@ public class Cctv {
         this.longitude = command.getLongitude();
         this.latitude = command.getLatitude();
         this.updatedAt = new Date();
-
-        if (command.getGroupId() != null) {
-            CctvGroup group = new CctvGroup();
-            group.setId(command.getGroupId());
-            this.group = group;
-        }
+        // ⚠️ 그룹 설정은 외부에서 setGroup() 호출로 처리
     }
 }

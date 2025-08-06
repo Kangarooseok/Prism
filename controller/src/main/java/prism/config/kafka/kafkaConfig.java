@@ -16,7 +16,7 @@ public class kafkaConfig {
     @Bean
     public ProducerFactory<String, String> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); // Kafka 서버 주소
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.30.28.41:9092"); // Kafka 서버 주소
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class); // Key 직렬화
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class); // Value 직렬화
         return new DefaultKafkaProducerFactory<>(configProps);
