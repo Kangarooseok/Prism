@@ -3,8 +3,6 @@ kind: Deployment
 metadata:
   name: prism-backend
   namespace: controller
-  labels:
-    app: prism-backend
 spec:
   replicas: 1
   selector:
@@ -18,9 +16,29 @@ spec:
       containers:
         - name: prism-backend
           image: suggiss/prism-backend:latest
-          imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          env:
+            - name: DB_DRIVER_CLASS_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_DRIVER_CLASS_NAME
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_URL
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
           readinessProbe:
             httpGet:
               path: /actuator/health
