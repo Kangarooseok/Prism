@@ -1,27 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: controller
+  name: prism-backend
+  namespace: controller
   labels:
-    app: controller
+    app: prism-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: controller
+      app: prism-backend
   template:
     metadata:
       labels:
-        app: controller
+        app: prism-backend
     spec:
       containers:
-        - name: controller
-          image: "username/controller:latest"
+        - name: prism-backend
+          image: suggiss/prism-backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           readinessProbe:
             httpGet:
-              path: '/actuator/health'
+              path: /actuator/health
               port: 8080
             initialDelaySeconds: 15
             timeoutSeconds: 2
@@ -29,7 +31,7 @@ spec:
             failureThreshold: 10
           livenessProbe:
             httpGet:
-              path: '/actuator/health'
+              path: /actuator/health
               port: 8080
             initialDelaySeconds: 15
             timeoutSeconds: 2

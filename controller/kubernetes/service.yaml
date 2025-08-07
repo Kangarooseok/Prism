@@ -1,12 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: controller
+  name: prism-backend
+  namespace: controller
   labels:
-    app: controller
+    app: prism-backend
 spec:
-  ports:
-    - port: 8080
-      targetPort: 8080
   selector:
-    app: controller
+    app: prism-backend
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP
