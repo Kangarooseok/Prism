@@ -16,6 +16,7 @@ spec:
       containers:
         - name: prism-backend
           image: suggiss/prism-backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:

@@ -45,3 +45,5 @@ node_modules
 .dist/
 .pem
 .env
+db-config.yaml
+db-secret.yaml
