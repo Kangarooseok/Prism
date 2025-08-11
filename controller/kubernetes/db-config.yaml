@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  namespace: controller
+data:
+  DB_DRIVER_CLASS_NAME: "org.mariadb.jdbc.Driver"
+  DB_URL: "jdbc:mariadb://172.30.29.105:3306/cctv_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
+  DB_USERNAME: "root"
