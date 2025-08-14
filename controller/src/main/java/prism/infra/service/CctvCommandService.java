@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import prism.domain.cctv.command.ModifyCctvCommand;
 import prism.domain.cctv.command.RegisterCctvCommand;
-import prism.domain.cctv.event.CctvDeleted;
-import prism.domain.cctv.event.CctvModified;
-import prism.domain.cctv.event.CctvRegistered;
+//import prism.domain.cctv.event.CctvDeleted;
+//import prism.domain.cctv.event.CctvModified;
+//import prism.domain.cctv.event.CctvRegistered;
 import prism.domain.cctv.model.Cctv;
 import prism.domain.cctv.repository.CctvRepository;
 import prism.domain.group.model.CctvGroup;
 import prism.domain.group.repository.CctvGroupRepository;
-import prism.infra.EventPublisher;
+//import prism.infra.EventPublisher;
 
 import java.util.Date;
 import java.util.List;
@@ -25,7 +25,7 @@ public class CctvCommandService {
 
     private final CctvRepository cctvRepository;
     private final CctvGroupRepository cctvGroupRepository;
-    private final EventPublisher eventPublisher;
+//    private final EventPublisher eventPublisher;
 
     // CCTV 등록
     public Cctv register(RegisterCctvCommand command) {
@@ -47,7 +47,7 @@ public class CctvCommandService {
         Cctv saved = cctvRepository.save(cctv);
 
         // 등록 이벤트 발행 (Kafka)
-        eventPublisher.publish(new CctvRegistered(saved));
+//        eventPublisher.publish(new CctvRegistered(saved));
         return saved;
     }
 
@@ -71,7 +71,7 @@ public class CctvCommandService {
         Cctv saved = cctvRepository.save(cctv);
 
         // 수정 이벤트 발행 (Kafka)
-        eventPublisher.publish(new CctvModified(saved));
+//        eventPublisher.publish(new CctvModified(saved));
         return saved;
     }
 
@@ -85,7 +85,7 @@ public class CctvCommandService {
         Cctv cctv = optional.get();
 
         // 삭제 이벤트 발행 (Kafka)
-        eventPublisher.publish(new CctvDeleted(cctv));
+//        eventPublisher.publish(new CctvDeleted(cctv));
 
         // DB 삭제
         cctvRepository.delete(cctv);
