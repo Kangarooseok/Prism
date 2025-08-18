@@ -15,13 +15,13 @@ public class CctvStatsController {
 
     private final CctvStatsService statsService;
 
-    /** 현재 총보유량 */
+    // 현재 총보유량
     @GetMapping("/count")
     public Map<String, Long> getCurrentCount() {
         return Map.of("total", statsService.getCurrentTotal());
     }
 
-    /** 특정 날짜(YYYY-MM-DD)의 '그 날 종료 시점' 총보유량 */
+    // 특정 날짜(YYYY-MM-DD)의 '그 날 종료 시점' 총보유량
     @GetMapping("/total-daily")
     public Map<String, Long> getTotalDaily(
             @RequestParam("date")

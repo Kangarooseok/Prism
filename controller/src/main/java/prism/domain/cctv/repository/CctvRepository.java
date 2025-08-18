@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import prism.domain.cctv.model.Cctv;
 
 import java.util.List;
-import java.util.Date;          // 기존 메서드 유지
-import java.sql.Timestamp;     // ✨ cutoff 파라미터용 (네이티브 집계)
+import java.util.Date;
+import java.sql.Timestamp;
 
 @Repository
 public interface CctvRepository extends CrudRepository<Cctv, Long> {

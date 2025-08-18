@@ -20,38 +20,34 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            # --- 기존 DB_* ---
             - name: DB_DRIVER_CLASS_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: db-config
-                  key: DB_DRIVER_CLASS_NAME
+              valueFrom: { configMapKeyRef: { name: db-config, key: DB_DRIVER_CLASS_NAME } }
             - name: DB_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: db-config
-                  key: DB_URL
+              valueFrom: { configMapKeyRef: { name: db-config, key: DB_URL } }
             - name: DB_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: db-config
-                  key: DB_USERNAME
+              valueFrom: { configMapKeyRef: { name: db-config, key: DB_USERNAME } }
             - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_PASSWORD
+              valueFrom: { secretKeyRef: { name: db-secret, key: DB_PASSWORD } }
+
+            # --- 추가: ERROR_DB_* ---
+            - name: ERROR_DB_DRIVER_CLASS_NAME
+              valueFrom: { configMapKeyRef: { name: db-config, key: ERROR_DB_DRIVER_CLASS_NAME } }
+            - name: ERROR_DB_URL
+              valueFrom: { configMapKeyRef: { name: db-config, key: ERROR_DB_URL } }
+            - name: ERROR_DB_USERNAME
+              valueFrom: { configMapKeyRef: { name: db-config, key: ERROR_DB_USERNAME } }
+            - name: ERROR_DB_PASSWORD
+              valueFrom: { secretKeyRef: { name: db-secret, key: ERROR_DB_PASSWORD } }
+
           readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
+            httpGet: { path: /actuator/health, port: 8080 }
             initialDelaySeconds: 15
             timeoutSeconds: 2
             periodSeconds: 5
             failureThreshold: 10
           livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
+            httpGet: { path: /actuator/health, port: 8080 }
             initialDelaySeconds: 15
             timeoutSeconds: 2
             periodSeconds: 5
