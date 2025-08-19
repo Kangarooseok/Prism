@@ -5,6 +5,10 @@ metadata:
   namespace: controller
 spec:
   replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: { maxUnavailable: 0, maxSurge: 1 }
   selector:
     matchLabels:
       app: prism-backend
@@ -19,8 +23,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+
           env:
-            # --- 기존 DB_* ---
+            # 기본 DB_*
             - name: DB_DRIVER_CLASS_NAME
               valueFrom: { configMapKeyRef: { name: db-config, key: DB_DRIVER_CLASS_NAME } }
             - name: DB_URL
@@ -30,7 +35,7 @@ spec:
             - name: DB_PASSWORD
               valueFrom: { secretKeyRef: { name: db-secret, key: DB_PASSWORD } }
 
-            # --- 추가: ERROR_DB_* ---
+            # 읽기 ERROR_DB_*
             - name: ERROR_DB_DRIVER_CLASS_NAME
               valueFrom: { configMapKeyRef: { name: db-config, key: ERROR_DB_DRIVER_CLASS_NAME } }
             - name: ERROR_DB_URL
@@ -39,6 +44,7 @@ spec:
               valueFrom: { configMapKeyRef: { name: db-config, key: ERROR_DB_USERNAME } }
             - name: ERROR_DB_PASSWORD
               valueFrom: { secretKeyRef: { name: db-secret, key: ERROR_DB_PASSWORD } }
+
 
           readinessProbe:
             httpGet: { path: /actuator/health, port: 8080 }

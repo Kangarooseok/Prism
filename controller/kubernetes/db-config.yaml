@@ -8,6 +8,6 @@ data:
   DB_URL: "jdbc:mariadb://172.30.29.235:4016/cctv_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
   DB_USERNAME: "app_user"
 
-  ERROR_DB_DRIVER_CLASS_NAME: "com.mariadb.cj.jdbc.Driver"
-  ERROR_DB_URL: "jdbc:mariadb://172.30.29.???:4016/faultDetermine-read?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
-  ERROR_DB_USERNAME: "app_user"
+  ERROR_DB_DRIVER_CLASS_NAME: "org.mariadb.jdbc.Driver"
+  ERROR_DB_URL: "jdbc:mariadb://172.30.29.231:3306/myDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
+  ERROR_DB_USERNAME: "root"

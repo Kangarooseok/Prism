@@ -34,4 +34,24 @@ public interface CctvRepository extends CrudRepository<Cctv, Long> {
             nativeQuery = true
     )
     long countAsOf(@Param("cutoff") Timestamp cutoff);
+
+    @Query(value = "SELECT COUNT(*) FROM cctv WHERE status = :status AND deleted_at IS NULL", nativeQuery = true)
+    long countByStatusNow(@Param("status") String status);
+
+    // --- 추가: 상태별 '특정일 종료 시점' 집계 ---
+    @Query(value = """
+            SELECT COUNT(*) 
+            FROM cctv 
+            WHERE status = :status
+              AND created_at <= :cutoff 
+              AND (deleted_at IS NULL OR deleted_at > :cutoff)
+            """, nativeQuery = true)
+    long countByStatusAsOf(@Param("status") String status, @Param("cutoff") Timestamp cutoff);
+
+    @Query(value = """
+    SELECT id FROM cctv
+    WHERE created_at <= :cutoff
+      AND (deleted_at IS NULL OR deleted_at > :cutoff)
+""", nativeQuery = true)
+    List<Long> findIdsAsOf(@Param("cutoff") Timestamp cutoff);
 }

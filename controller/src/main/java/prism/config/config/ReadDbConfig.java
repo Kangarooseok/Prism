@@ -1,8 +1,10 @@
 package prism.config.config;
 
-
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.sql.DataSource;
 
 @Configuration
+@ConditionalOnProperty(prefix = "error.datasource", name = "url") // URL 없으면 전체 ReadDbConfig 건너뜀
 public class ReadDbConfig {
 
     @Bean
@@ -32,6 +35,7 @@ public class ReadDbConfig {
     }
 
     @Bean(name = "errorJdbc")
+    @ConditionalOnBean(name = "errorDataSource") // DataSource 없으면 템플릿도 생성 안 함
     public NamedParameterJdbcTemplate errorJdbc(@Qualifier("errorDataSource") DataSource ds) {
         return new NamedParameterJdbcTemplate(ds);
     }
