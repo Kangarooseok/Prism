@@ -62,6 +62,20 @@ public class Cctv {
         updatedAt = Instant.now();
     }
 
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version = 0L;
+
+    private static String normalizeStatus(String s) {
+        if (s == null) return "ACTIVE";
+        switch (s.trim().toUpperCase()) {
+            case "ACTIVE", "OK", "ONLINE": return "ACTIVE";
+            case "WARNING", "WARN", "ALERT": return "WARNING";
+            case "OFFLINE", "ERROR", "DOWN", "FAIL": return "OFFLINE";
+            default: return "ACTIVE";
+        }
+    }
+
     // 등록 커맨드를 기반으로 CCTV 정보 세팅
     public void registerCctv(RegisterCctvCommand command) {
         this.locationName = command.getLocationName();
@@ -70,7 +84,7 @@ public class Cctv {
         this.hlsAddress = command.getHlsAddress();
         this.longitude = command.getLongitude();
         this.latitude = command.getLatitude();
-        // 그룹 설정은 외부에서 setGroup() 호출로 처리
+        if (command.getStatus() != null) this.status = normalizeStatus(command.getStatus());
     }
 
     // 수정 커맨드를 기반으로 CCTV 정보 업데이트
@@ -81,7 +95,6 @@ public class Cctv {
         this.hlsAddress = command.getHlsAddress();
         this.longitude = command.getLongitude();
         this.latitude = command.getLatitude();
-        // 그룹 설정은 외부에서 setGroup() 호출로 처리
-        // updatedAt은 @PreUpdate에서 자동 갱신
+        if (command.getStatus() != null) this.status = normalizeStatus(command.getStatus());
     }
 }
