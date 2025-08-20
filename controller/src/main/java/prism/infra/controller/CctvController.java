@@ -35,6 +35,7 @@ public class CctvController {
         command.setLongitude(request.getLongitude());
         command.setLatitude(request.getLatitude());
         command.setGroupId(request.getGroupId());
+        command.setStatus(request.getStatus());
 
         return cctvCommandService.register(command);
     }

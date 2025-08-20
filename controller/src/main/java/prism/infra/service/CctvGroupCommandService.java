@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -82,38 +84,57 @@ public class CctvGroupCommandService {
 
     @Transactional
     public CctvGroupResponse update(Long id, CctvGroupRequest request) {
-        // 그룹 존재 여부 확인
+        // 1) 그룹 존재 여부 확인
         CctvGroup group = groupRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Group not found"));
 
-        // 그룹명 중복 검사 (자기 자신 제외)
+        // 2) 그룹명 중복 검사 (자기 자신 제외)
         Optional<CctvGroup> existingGroupOpt = groupRepository.findByName(request.getName());
         if (existingGroupOpt.isPresent() && !existingGroupOpt.get().getId().equals(id)) {
             throw new DuplicateGroupNameException("이미 존재하는 그룹명입니다.");
         }
 
-        // 그룹 정보 수정
+        // 3) 그룹 정보 수정
         group.setName(request.getName());
         group.setDescription(request.getDescription());
         group.setUpdatedAt(new Date());
-
         CctvGroup saved = groupRepository.save(group);
 
-        // 기존 CCTV들 해제 후 '미정' 그룹으로 이동
+        // 4) 기존/신규 CCTV 목록 비교하여 "변경분만" 갱신
+        // 기존: 현재 그룹에 속한 CCTV id들
         List<Cctv> existingCctvs = cctvRepository.findByGroupId(saved.getId());
-        moveToUnassignedGroup(existingCctvs);
+        Set<Long> oldIds = existingCctvs.stream().map(Cctv::getId).collect(Collectors.toSet());
 
-        // 새로운 CCTV들을 그룹에 배정
-        if (request.getCctvIds() != null) {
-            List<Cctv> newCctvs = StreamSupport.stream(
-                    cctvRepository.findAllById(request.getCctvIds()).spliterator(), false
+        // 신규: 요청으로 받은 CCTV id들(null → 빈 목록)
+        List<Long> newIdsList = request.getCctvIds() != null ? request.getCctvIds() : Collections.emptyList();
+        Set<Long> newIds = new HashSet<>(newIdsList);
+
+        // 제거 대상: 기존 - 신규 → '미정' 그룹으로 이동
+        List<Long> toRemove = oldIds.stream()
+                .filter(idVal -> !newIds.contains(idVal))
+                .collect(Collectors.toList());
+
+        // 추가 대상: 신규 - 기존 → 이 그룹으로 이동
+        List<Long> toAdd = newIds.stream()
+                .filter(idVal -> !oldIds.contains(idVal))
+                .collect(Collectors.toList());
+
+        // 5) 실제 변경이 있는 것만 업데이트
+        if (!toRemove.isEmpty()) {
+            CctvGroup unassigned = ensureUnassignedGroupExists();
+            List<Cctv> removeEntities = StreamSupport.stream(
+                    cctvRepository.findAllById(toRemove).spliterator(), false
             ).collect(Collectors.toList());
+            removeEntities.forEach(c -> c.setGroup(unassigned));
+            cctvRepository.saveAll(removeEntities);
+        }
 
-            for (Cctv cctv : newCctvs) {
-                cctv.setGroup(saved);
-            }
-
-            cctvRepository.saveAll(newCctvs);
+        if (!toAdd.isEmpty()) {
+            List<Cctv> addEntities = StreamSupport.stream(
+                    cctvRepository.findAllById(toAdd).spliterator(), false
+            ).collect(Collectors.toList());
+            addEntities.forEach(c -> c.setGroup(saved));
+            cctvRepository.saveAll(addEntities);
         }
 
         return toResponse(saved);

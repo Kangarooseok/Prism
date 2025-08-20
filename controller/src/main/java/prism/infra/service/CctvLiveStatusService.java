@@ -17,19 +17,18 @@ public class CctvLiveStatusService {
 
     public String resolveStatusOrActive(Long cctvId) {
         final String sql = """
-            SELECT status
-            FROM fault_events
-            WHERE cctv_id = :id
-            ORDER BY checked_at DESC
-            LIMIT 1
-        """;
+        SELECT status FROM fault_events
+        WHERE cctv_id = :id
+        ORDER BY checked_at DESC
+        LIMIT 1
+    """;
         try {
             return errorJdbc.query(sql, new MapSqlParameterSource("id", cctvId), rs -> {
                 if (rs.next()) return normalize(rs.getString("status"));
-                return "ACTIVE"; // 레코드 없으면 ACTIVE
+                return "ACTIVE"; // 레코드가 '없을 때'만 ACTIVE
             });
         } catch (DataAccessException ex) {
-            return "ACTIVE";
+            return null;          // ← 실패 시 null로
         }
     }
 
