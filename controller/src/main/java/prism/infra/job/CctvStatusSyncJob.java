@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import prism.domain.cctv.model.Cctv;
 import prism.domain.cctv.repository.CctvRepository;
 import prism.infra.service.CctvLiveStatusService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.scheduling.annotation.Scheduled;
 
 @Component
 @RequiredArgsConstructor
@@ -17,6 +19,7 @@ public class CctvStatusSyncJob {
     private final CctvRepository cctvRepository;
     private final CctvLiveStatusService liveStatusService;
 
+    @Transactional(readOnly = true)
     @Scheduled(fixedDelay = 60_000)
     public void sync() {
         int page = 0, size = 200; // 배치 크기
