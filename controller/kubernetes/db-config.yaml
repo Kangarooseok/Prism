@@ -4,10 +4,22 @@ metadata:
   name: db-config
   namespace: controller
 data:
+  # 메인 쓰기 DB (CCTV)
   DB_DRIVER_CLASS_NAME: "org.mariadb.jdbc.Driver"
   DB_URL: "jdbc:mariadb://172.30.29.235:4016/cctv_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
   DB_USERNAME: "app_user"
 
+  # 장애판별 읽기 DB
   ERROR_DB_DRIVER_CLASS_NAME: "org.mariadb.jdbc.Driver"
   ERROR_DB_URL: "jdbc:mariadb://172.30.29.231:4016/myDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
   ERROR_DB_USERNAME: "app_user"
+
+  # 사용자 읽기 DB
+  USER_DB_DRIVER_CLASS_NAME: "org.mariadb.jdbc.Driver"
+  USER_DB_URL: "jdbc:mariadb://172.30.29.239:4016/myDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
+  USER_DB_USERNAME: "app_user"
+
+  # 구독 쓰기 DB
+  SUBSCRIPTION_DB_DRIVER_CLASS_NAME: "org.mariadb.jdbc.Driver"
+  SUBSCRIPTION_DB_URL: "jdbc:mariadb://172.30.29.243:4016/subscription?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
+  SUBSCRIPTION_DB_USERNAME: "app_user"

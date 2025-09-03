@@ -8,24 +8,25 @@ spec:
   revisionHistoryLimit: 2
   strategy:
     type: RollingUpdate
-    rollingUpdate: { maxUnavailable: 0, maxSurge: 1 }
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
-      app: prism-backend
+      app: "prism-backend"
   template:
     metadata:
       labels:
-        app: prism-backend
+        app: "prism-backend"
     spec:
       containers:
-        - name: prism-backend
-          image: suggiss/prism-backend:latest
+        - name: "prism-backend"
+          image: "suggiss/prism-backend:latest"
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
-
           env:
-            # 기본 DB_*
+            # 메인 DB (CCTV)
             - name: DB_DRIVER_CLASS_NAME
               valueFrom: { configMapKeyRef: { name: db-config, key: DB_DRIVER_CLASS_NAME } }
             - name: DB_URL
@@ -35,7 +36,7 @@ spec:
             - name: DB_PASSWORD
               valueFrom: { secretKeyRef: { name: db-secret, key: DB_PASSWORD } }
 
-            # 읽기 ERROR_DB_*
+            # 장애판별 읽기 DB
             - name: ERROR_DB_DRIVER_CLASS_NAME
               valueFrom: { configMapKeyRef: { name: db-config, key: ERROR_DB_DRIVER_CLASS_NAME } }
             - name: ERROR_DB_URL
@@ -45,15 +46,34 @@ spec:
             - name: ERROR_DB_PASSWORD
               valueFrom: { secretKeyRef: { name: db-secret, key: ERROR_DB_PASSWORD } }
 
+            # 사용자 읽기 DB
+            - name: USER_DB_DRIVER_CLASS_NAME
+              valueFrom: { configMapKeyRef: { name: db-config, key: USER_DB_DRIVER_CLASS_NAME } }
+            - name: USER_DB_URL
+              valueFrom: { configMapKeyRef: { name: db-config, key: USER_DB_URL } }
+            - name: USER_DB_USERNAME
+              valueFrom: { configMapKeyRef: { name: db-config, key: USER_DB_USERNAME } }
+            - name: USER_DB_PASSWORD
+              valueFrom: { secretKeyRef: { name: db-secret, key: USER_DB_PASSWORD } }
+
+            # 구독 쓰기 DB
+            - name: SUBSCRIPTION_DB_DRIVER_CLASS_NAME
+              valueFrom: { configMapKeyRef: { name: db-config, key: SUBSCRIPTION_DB_DRIVER_CLASS_NAME } }
+            - name: SUBSCRIPTION_DB_URL
+              valueFrom: { configMapKeyRef: { name: db-config, key: SUBSCRIPTION_DB_URL } }
+            - name: SUBSCRIPTION_DB_USERNAME
+              valueFrom: { configMapKeyRef: { name: db-config, key: SUBSCRIPTION_DB_USERNAME } }
+            - name: SUBSCRIPTION_DB_PASSWORD
+              valueFrom: { secretKeyRef: { name: db-secret, key: SUBSCRIPTION_DB_PASSWORD } }
 
           readinessProbe:
-            httpGet: { path: /actuator/health, port: 8080 }
+            httpGet: { path: "/actuator/health", port: 8080 }
             initialDelaySeconds: 15
             timeoutSeconds: 2
             periodSeconds: 5
             failureThreshold: 10
           livenessProbe:
-            httpGet: { path: /actuator/health, port: 8080 }
+            httpGet: { path: "/actuator/health", port: 8080 }
             initialDelaySeconds: 15
             timeoutSeconds: 2
             periodSeconds: 5

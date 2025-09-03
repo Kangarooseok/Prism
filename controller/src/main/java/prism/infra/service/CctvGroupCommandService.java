@@ -26,6 +26,8 @@ public class CctvGroupCommandService {
 
     private final CctvGroupRepository groupRepository;
     private final CctvRepository cctvRepository;
+    private final SubscriptionService subscriptionService;
+
 
     private static final String UNASSIGNED_GROUP_NAME = "미정";
 
@@ -154,7 +156,9 @@ public class CctvGroupCommandService {
         List<Cctv> cctvs = cctvRepository.findByGroupId(group.getId());
         moveToUnassignedGroup(cctvs);
 
+        subscriptionService.moveAllFromGroupToUnassigned(group.getId());
         groupRepository.deleteById(id);
+
     }
 
     // 단일 그룹 조회
@@ -186,6 +190,8 @@ public class CctvGroupCommandService {
         } else {
             dto.setCctvIds(Collections.emptyList());
         }
+
+        dto.setCreatedAt(group.getCreatedAt());
 
         return dto;
     }
