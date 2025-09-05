@@ -1,0 +1,57 @@
+# aws.yaml  (eksctl 클러스터 구성)
+# 생성 명령: eksctl create cluster -f aws.yaml
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: prism-controller                 # TODO: 클러스터 이름 확정
+  region: ap-northeast-2           # TODO: 리전 확정(서울 예시)
+  version: "1.32"                  # TODO: 조직 표준 버전 확인
+
+# EKS API Server를 프라이빗으로만 노출(콘솔/배스천/VPN에서 관리)
+privateCluster:
+  enabled: true
+  skipEndpointCreation: false      # 표본은 true였지만 새 클러스터 생성이면 보통 false 권장
+
+iam:
+  withOIDC: true                   # IRSA 활성화 (필요 시 SA에 역할 연결 가능)
+
+# 관리형 노드 그룹(애플리케이션 워커)
+managedNodeGroups:
+  - name: prism-backend-nodes
+    instanceType: t3.medium
+    desiredCapacity: 3
+    minSize: 1
+    maxSize: 5
+
+    privateNetworking: true
+    subnets:
+      - subnet-0dd29b560ea2ac133   # TODO: 프라이빗 서브넷(az-a) - 192.168.1.0/24 예시
+      - subnet-0ea5a85efded7bc7c   # TODO: 프라이빗 서브넷(az-c) - 192.168.4.0/24 예시
+
+    volumeSize: 20
+    volumeType: gp3
+    # amiFamily: Bottlerocket       # TODO: 보안/운영 표준에 따라 AL2(기본) 대신 Bottlerocket 사용 고려
+    labels:
+      role: worker
+      service: prism-backend       # 워크로드 선택용 라벨
+    tags:
+      Environment: production
+      Service: prism-backend
+      ManagedBy: eksctl
+
+# 제어Plane/컨트롤러 로그를 CloudWatch로
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+# EKS 관리 애드온
+addons:
+  - name: vpc-cni
+    version: latest                # TODO: 고정 버전 운영 시 명시 버전 지정
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+  - name: aws-ebs-csi-driver       # 동적 PV가 필요할 때 사용
