@@ -3,29 +3,27 @@
 <img width="1920" height="1080" alt="Prism" src="https://github.com/user-attachments/assets/62876cda-6637-4e1d-a945-e4d0ea3a18ea" />
 
 
-- 배포 URL : (사내/온프레미스 운영 비용 문제로 현재 서버 꺼짐 상태)
-- Demo 계정 :
-  [관리자]
-  · ID : admin@prism.com
-  · Password : password123
-  [네트워크 관리자]
-  · ID : network@prism.com
-  · Password : password123
-  [장치 관리자]
-  · ID : operator@prism.com
-  · Password : password123                  
-- 문의 : kms860926@gmail.com
+## 접속/데모 정보
+
+- **배포 URL**: 준비 중 *(사내 온프레미스 운영, 비용 이슈로 현재 서버 중지 상태)*
+
+### Demo 계정
+| 역할 | ID | Password |
+|---|---|---|
+| 관리자 | `admin@prism.com` | `password123` |
+| 네트워크 관리자 | `network@prism.com` | `password123` |
+| 장치 관리자 | `operator@prism.com` | `password123` |
+
+> 보안 안내: 데모 계정은 **조회(Read) 권한만 부여**됩니다. 쓰기/삭제/설정 변경은 차단됩니다.  
+
+- **문의**: [kms860926@gmail.com](mailto:kms860926@gmail.com)
 
 <br>
 
 ## 프로젝트 소개
 
-**한눈에 보기 (TL;DR)**  
-- **PRISM**는 CCTV의 **상태 감지 → 장애 판별 → 담당자 알림 → 이력 기록**을 이벤트 드리븐(EDA) 방식으로 자동화하는 관제 플랫폼입니다.  
-- Ping/RTSP 지표를 **10초 주기**로 수집하고, 간단한 룰로 **네트워크/장비** 이슈를 분리해 심각도를 산정한 뒤 **Slack/Jira/메일**로 알림을 전파합니다.  
-- **Kafka · CQRS · CDC · Kubernetes** 기반으로 **확장성과 신뢰성**을 확보했습니다.
-
   <img width="756" height="476" alt="카툰" src="https://github.com/user-attachments/assets/37d93f11-ad22-42af-a3f7-c3e282fb6d12" />
+  <br>
 
 
 ### 배경
