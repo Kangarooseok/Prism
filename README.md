@@ -553,7 +553,7 @@ prism/
 
 ## 8. 트러블 슈팅
 
-- [작성중](링크)
+- [백엔드 ↔ 프런트 연동 이슈 트러블슈팅](https://github.com/Kangarooseok/Prism/wiki/%EB%B0%B1%EC%97%94%EB%93%9C-%E2%86%94-%ED%94%84%EB%9F%B0%ED%8A%B8-%EC%97%B0%EB%8F%99-%EC%9D%B4%EC%8A%88-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85)
 
 - [작성중](링크)
 
